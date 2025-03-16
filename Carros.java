@@ -11,7 +11,7 @@ public class Carros {
         this.ano = ano;
     }
     public static void main(String[] args) {
-        Carros meusCarros = new Carros("Bwm", 2018);
+        Carros meusCarros = new Carros("BMW", 2018);
         meusCarros.exibir_informacoes();
     }
    
