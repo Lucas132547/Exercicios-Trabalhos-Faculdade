@@ -1,3 +1,4 @@
+package Src;
 import java.util.Scanner;
 
 public class EntradaSaida {
