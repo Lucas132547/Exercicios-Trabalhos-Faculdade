@@ -5,15 +5,15 @@ public class ExemploSwitchCase {
         int opcao = 1;
         switch (opcao) {
             case 1:
-            System.out.println("Opcao 1 Escolhida");     
-            break;
+                System.out.println("Opcao 1 Escolhida");     
+                break;
         
             case 2:
-            System.out.println("Opcao 2 escolhida");
-            break;
+                System.out.println("Opcao 2 escolhida");
+                break;
             
             default:
-            System.out.println("opcao invalida");
+                System.out.println("opcao invalida");
         }
     }
 }
