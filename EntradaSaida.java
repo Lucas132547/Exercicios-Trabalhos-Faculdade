@@ -6,6 +6,7 @@ public class EntradaSaida {
             System.out.println("Digite seu nome: ");
             String nome = scanner.nextLine();
             System.out.println("Olá " +nome+ ", bem vindo ao Java!");
+            scanner.close();
         }
     }
 }
