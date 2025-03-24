@@ -54,7 +54,7 @@ public class Main {
                     break;
                 case 4:
 
-                int opcao4;
+                    int opcao4;
 
                 do {
                     System.out.println("1. Visualizar apenas tarefas a serem realizadas");
