@@ -1,22 +1,25 @@
 package to_do_list_lucas_silveira.br_com_todo_main;
 
-import java.io.IOException;
+import to_do_list_lucas_silveira.br_com_todo_model.Tarefa;
+import to_do_list_lucas_silveira.br_com_todo_util.Arquivo;
 import java.util.Scanner;
 
 public class Main {
 
-    
-    static void limpar_tela() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Erro ao limpar a tela.");
-        }
+    public Main(String nome_tarefa, boolean status_tarefa, String descricao_tarefa){
+        Tarefa.nome_tarefa = nome_tarefa;
+        Tarefa.status_tarefa = status_tarefa;
+        Tarefa.descricao_tarefa = descricao_tarefa;
     }
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcao;
+
+        Main teste = new Main("Exemplo", true, "qualquer coisa");
+
+        System.out.println("Teste " + teste.getnome_tarefa());
+
+        teste.setnome_tarefa("Depois da mudança");
 
         do {
             System.out.println("############# TO DO LIST #############");
@@ -30,7 +33,7 @@ public class Main {
 
             opcao = scanner.nextInt();
             
-            limpar_tela();  
+            Arquivo.limpar_tela();  
 
             switch (opcao) {
                 case 1:
@@ -62,7 +65,7 @@ public class Main {
                     System.out.print("\nEscolha uma opção: ");
                     opcao4 = scanner.nextInt();
 
-                    limpar_tela();
+                    Arquivo.limpar_tela();
                     
                     if (opcao4 == 1) {
                         System.out.println("Visualizar tarefas a serem realizadas");
