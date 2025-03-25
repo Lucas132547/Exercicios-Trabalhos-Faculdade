@@ -1,32 +1,46 @@
 package to_do_list_lucas_silveira.br_com_todo_model;
 
-public class Tarefa {
-    //Getters e Setters
-    public static String nome_tarefa;
-    public static boolean status_tarefa;
-    public static String descricao_tarefa;
-    
-    public String getnome_tarefa(){
-        return nome_tarefa;
-    }
-    public Boolean getstatus_tarefa(){
-        return status_tarefa;
-    }
-    public String getdescricao_tarefa(){
-        return descricao_tarefa;
+import java.io.Serializable; // Import necessário
+
+public class Tarefa implements Serializable {
+    private static final long serialVersionUID = 1L; // Identificador único para serialização
+
+    private String nome;
+    private String descricao;
+    private boolean concluida;
+
+    public Tarefa(String nome, String descricao) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.concluida = false;
     }
 
-    /////////////////////////////////////////////////////////
-    
-    public void setnome_tarefa(String nome_tarefa){
-        Tarefa.nome_tarefa = nome_tarefa;
+    public String getNome() {
+        return nome;
     }
-    public void setstatus_tarefa(boolean status_tarefa){
-        Tarefa.status_tarefa = status_tarefa;
-    }
-    public void setdescricao_tarefa(String descricao_tarefa){
-        Tarefa.descricao_tarefa = descricao_tarefa;
-    }
-    
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public boolean isConcluida() {
+        return concluida;
+    }
+
+    public void marcarComoConcluida() {
+        this.concluida = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Tarefa: " + nome + " | Descrição: " + descricao + " | Concluída: " + (concluida ? "Sim" : "Não");
+    }
 }

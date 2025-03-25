@@ -1,90 +1,167 @@
 package to_do_list_lucas_silveira.br_com_todo_main;
 
 import to_do_list_lucas_silveira.br_com_todo_model.Tarefa;
+import to_do_list_lucas_silveira.br_com_todo_service.Gerenciador;
 import to_do_list_lucas_silveira.br_com_todo_util.Arquivo;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    public Main(String nome_tarefa, boolean status_tarefa, String descricao_tarefa){
-        Tarefa.nome_tarefa = nome_tarefa;
-        Tarefa.status_tarefa = status_tarefa;
-        Tarefa.descricao_tarefa = descricao_tarefa;
-    }
+    public static boolean desejaContinuar(Scanner scanner) {
+        System.out.println("\nDeseja voltar ao menu inicial ou sair?");
+        System.out.println("1. Voltar ao menu");
+        System.out.println("2. Sair do sistema");
+        System.out.print("Escolha uma opção: ");
+    
+        int escolha = scanner.nextInt();
+        scanner.nextLine(); // Limpa o buffer
+    
+        if (escolha == 2) {
+            System.out.println("Saindo do sistema...");
+            return false; // Sai do loop principal
+        }
+    
+        return true; // Volta ao menu
+        }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int opcao;
+        Gerenciador gerenciador = new Gerenciador();
 
-        Main teste = new Main("Exemplo", true, "qualquer coisa");
+        // Carrega as tarefas ao iniciar
+        List<Tarefa> tarefas = Arquivo.carregarTarefas();
+        if (tarefas != null) {
+            for (Tarefa t : tarefas) {
+                gerenciador.adicionarTarefa(t.getNome(), t.getDescricao());
+            }
+        }
 
-        System.out.println("Teste " + teste.getnome_tarefa());
-
-        teste.setnome_tarefa("Depois da mudança");
-
+        int opcao = 0;
         do {
-            System.out.println("############# TO DO LIST #############");
+
+            if(opcao != 4){
+                Gerenciador.limparTela();
+            }
+
+            System.out.println("\n############# TO DO LIST #############");
             System.out.println("1. Adicionar tarefa");
             System.out.println("2. Remover tarefa");
             System.out.println("3. Editar tarefa");
             System.out.println("4. Visualizar tarefas");
-            System.out.println("5. Marcar tarefa como concluída");
+            System.out.println("5. Marcar como concluída");
             System.out.println("6. Sair");
-            System.out.print("\nEscolha uma opção: ");
+            System.out.print("Escolha uma opção: ");
 
             opcao = scanner.nextInt();
-            
-            Arquivo.limpar_tela();  
+            scanner.nextLine(); // Limpar buffer4
+
+            Gerenciador.limparTela();
+
+
 
             switch (opcao) {
                 case 1:
-                    scanner.nextLine();  
-
-                    System.out.println("Digite o nome da tarefa que você deseja adicionar:");
+                    System.out.print("Nome da tarefa: ");
                     String nome = scanner.nextLine();
-            
-                    if (nome.trim().isEmpty()) {
-                        System.out.println("Você deve fornecer um nome válido para a tarefa.");
-                    } else {
-                        System.out.println("Tarefa adicionada com sucesso: " + nome);
+                    System.out.print("Descrição: ");
+                    String descricao = scanner.nextLine();
+                    gerenciador.adicionarTarefa(nome, descricao); // Chama o método do Gerenciador
+
+                    Gerenciador.limparTela();
+
+                    Arquivo.salvarTarefas(gerenciador.getTarefas()); // Salva após adicionar
+
+                    if (!desejaContinuar(scanner)) {
+                        opcao = 6; // Força a saída do loop
                     }
+
+                    Gerenciador.limparTela();
 
                     break;
                 case 2:
-                    System.out.println("Remover tarefa...");
+                    System.out.print("Nome da tarefa a ser removida: ");
+                    String tarefaRemover = scanner.nextLine();
+                    gerenciador.removerTarefa(tarefaRemover); // Chama o método do Gerenciador
+                    Arquivo.salvarTarefas(gerenciador.getTarefas()); // Salva após remover
+
+                    if (!desejaContinuar(scanner)) {
+                        opcao = 6; // Força a saída do loop
+                    }
+
+                    Gerenciador.limparTela();
+
                     break;
+
                 case 3:
-                    System.out.println("Editar tarefa...");
+                    System.out.print("Nome da tarefa a ser editada: ");
+                    String tarefaEditar = scanner.nextLine();
+                    System.out.print("Novo nome da tarefa: ");
+                    String novoNome = scanner.nextLine();
+                    System.out.print("Nova descrição: ");
+                    String novaDescricao = scanner.nextLine();
+                    gerenciador.editarTarefa(tarefaEditar, novoNome, novaDescricao); // Chama o método do Gerenciador
+                    Arquivo.salvarTarefas(gerenciador.getTarefas()); // Salva após editar
+
+                    if (!desejaContinuar(scanner)) {
+                        opcao = 6; // Força a saída do loop
+                    }
+
+                    Gerenciador.limparTela();
+
                     break;
+
                 case 4:
 
                     int opcao4;
-
-                do {
-                    System.out.println("1. Visualizar apenas tarefas a serem realizadas");
-                    System.out.println("2. Visualizar tarefas a serem realizadas e tarefas já concluídas");
-                    System.out.print("\nEscolha uma opção: ");
-                    opcao4 = scanner.nextInt();
-
-                    Arquivo.limpar_tela();
+                    boolean opcaoValida = false;
+                
+                    do {
+                        System.out.println("Deseja visualizar também as tarefas concluídas?");
+                        System.out.println("1. Sim");
+                        System.out.println("2. Não");
                     
-                    if (opcao4 == 1) {
-                        System.out.println("Visualizar tarefas a serem realizadas");
-                    } else if (opcao4 == 2) {
-                        System.out.println("Visualizar todas as tarefas.");
-                    } else {
-                        System.out.println("Opção inválida! Tente novamente.");
-                    }
-                } while (opcao4 != 1 && opcao4 != 2);  
+                        try {
+                            opcao4 = scanner.nextInt(); // Lê a opção do usuário
+                            Gerenciador.limparTela();
+
+                            if (opcao4 == 1) {
+                                System.out.println("\n### LISTA DE TAREFAS ###");
+                                gerenciador.listarTarefas(true); // Chama o método do Gerenciador
+                                opcaoValida = true;
+                            } else if (opcao4 == 2) {
+                                System.out.println("\n### LISTA DE TAREFAS ###");
+                                gerenciador.listarTarefas(false); // Chama o método do Gerenciador
+                                opcaoValida = true;
+                            } else {
+                                System.out.println("Opção inválida. Por favor, escolha 1 ou 2.");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Entrada inválida. Por favor, digite um número.");
+                            scanner.nextLine(); // Limpa o buffer do scanner para evitar loop infinito
+                        }
+                    } while (!opcaoValida); // Continua até o usuário digitar uma opção válida
 
                     break;
                 case 5:
-                    System.out.println("Marcar tarefa como concluída...");
+                    System.out.print("Nome da tarefa para concluir: ");
+                    String nomeTarefa = scanner.nextLine();
+                    gerenciador.marcarComoConcluida(nomeTarefa); // Chama o método do Gerenciador
+                    Arquivo.salvarTarefas(gerenciador.getTarefas()); // Salva após alteração
+                    
+                    if (!desejaContinuar(scanner)) {
+                        opcao = 6; // Força a saída do loop
+                    }
+
                     break;
+
                 case 6:
                     System.out.println("Saindo...");
                     break;
+
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opção inválida! Tente novamente.");
             }
         } while (opcao != 6);
 
