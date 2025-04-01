@@ -1,6 +1,7 @@
 package to_do_list_lucas_silveira.br_com_todo_service;
 
 import to_do_list_lucas_silveira.br_com_todo_model.Tarefa;
+import to_do_list_lucas_silveira.br_com_todo_model.TarefaPrioritaria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +10,8 @@ public class Gerenciador {
     
     private List<Tarefa> tarefas = new ArrayList<>();
 
-    public void adicionarTarefa(String nome, String descricao) {
-        tarefas.add(new Tarefa(nome, descricao));
+    public void adicionarTarefa(Tarefa tarefa) {
+        tarefas.add(tarefa) ;
         System.out.println("Tarefa adicionada com sucesso!");
     }
 
@@ -31,10 +32,15 @@ public class Gerenciador {
         System.out.println("Tarefa não encontrada.");
     }
 
-    public void listarTarefas(boolean incluirConcluidas) {
+     public void listarTarefas(boolean incluirConcluidas) {
+        System.out.println("\n### LISTA DE TAREFAS ###");
         for (Tarefa t : tarefas) {
             if (incluirConcluidas || !t.isConcluida()) {
-                System.out.println(t);
+                if (t instanceof TarefaPrioritaria) {
+                    System.out.println("[PRIORITÁRIA] " + t);
+                } else {
+                    System.out.println(t);
+                }
             }
         }
     }
@@ -65,6 +71,10 @@ public class Gerenciador {
         } catch (Exception e) {
             System.out.println("Não foi possível limpar a tela.");
         }
+    }
+
+    public void setTarefas(List<Tarefa> tarefas) {
+        this.tarefas = tarefas;
     }
 
 }

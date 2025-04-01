@@ -7,6 +7,7 @@ import java.util.List;
 public class Arquivo {
     private static final String FILE_NAME = "to_do_list_lucas_silveira/tarefas.txt";
 
+    //Função para salvar tarefas em um arquivo txt
     public static void salvarTarefas(List<Tarefa> tarefas) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             oos.writeObject(tarefas);
@@ -16,6 +17,7 @@ public class Arquivo {
         }
     }
 
+    //Função para carregar tarefas de um arquivo txt
     @SuppressWarnings("unchecked")
     public static List<Tarefa> carregarTarefas() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {

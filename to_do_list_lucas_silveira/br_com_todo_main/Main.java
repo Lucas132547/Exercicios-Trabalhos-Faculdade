@@ -1,6 +1,7 @@
 package to_do_list_lucas_silveira.br_com_todo_main;
 
 import to_do_list_lucas_silveira.br_com_todo_model.Tarefa;
+import to_do_list_lucas_silveira.br_com_todo_model.TarefaPrioritaria;
 import to_do_list_lucas_silveira.br_com_todo_service.Gerenciador;
 import to_do_list_lucas_silveira.br_com_todo_util.Arquivo;
 
@@ -33,9 +34,7 @@ public class Main {
         // Carrega as tarefas ao iniciar
         List<Tarefa> tarefas = Arquivo.carregarTarefas();
         if (tarefas != null) {
-            for (Tarefa t : tarefas) {
-                gerenciador.adicionarTarefa(t.getNome(), t.getDescricao());
-            }
+                gerenciador.setTarefas(tarefas);
         }
 
         int opcao = 0;
@@ -67,7 +66,20 @@ public class Main {
                     String nome = scanner.nextLine();
                     System.out.print("Descrição: ");
                     String descricao = scanner.nextLine();
-                    gerenciador.adicionarTarefa(nome, descricao); // Chama o método do Gerenciador
+                    System.out.println("É uma tarefa prioritaria? (1.Sim 2.Não)");
+
+                    boolean prioritaria = scanner.nextInt() == 1;
+                    scanner.nextLine();
+                    
+                    Tarefa novaTarefa;
+                        if (prioritaria) {
+                            novaTarefa = new TarefaPrioritaria(nome, descricao, true);
+                        } else {
+                            novaTarefa = new Tarefa(nome, descricao);
+                        }
+
+
+                    gerenciador.adicionarTarefa(novaTarefa); // Chama o método do Gerenciador
 
                     Gerenciador.limparTela();
 
