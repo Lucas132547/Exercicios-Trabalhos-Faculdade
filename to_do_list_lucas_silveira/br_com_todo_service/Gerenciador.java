@@ -33,11 +33,10 @@ public class Gerenciador {
     }
 
      public void listarTarefas(boolean incluirConcluidas) {
-        System.out.println("\n### LISTA DE TAREFAS ###");
         for (Tarefa t : tarefas) {
             if (incluirConcluidas || !t.isConcluida()) {
                 if (t instanceof TarefaPrioritaria) {
-                    System.out.println("[PRIORITÁRIA] " + t);
+                    System.out.println(t + " [PRIORITÁRIA] ");
                 } else {
                     System.out.println(t);
                 }

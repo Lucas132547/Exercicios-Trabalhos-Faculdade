@@ -40,9 +40,7 @@ public class Main {
         int opcao = 0;
         do {
 
-            if(opcao != 4){
-                Gerenciador.limparTela();
-            }
+            Gerenciador.limparTela();
 
             System.out.println("\n############# TO DO LIST #############");
             System.out.println("1. Adicionar tarefa");
@@ -93,7 +91,11 @@ public class Main {
 
                     break;
                 case 2:
-                    System.out.print("Nome da tarefa a ser removida: ");
+
+                    System.out.println("\n### LISTA DE TAREFAS ###");
+                    gerenciador.listarTarefas(true);    
+
+                    System.out.print("\nNome da tarefa a ser removida: ");
                     String tarefaRemover = scanner.nextLine();
                     gerenciador.removerTarefa(tarefaRemover); // Chama o método do Gerenciador
                     Arquivo.salvarTarefas(gerenciador.getTarefas()); // Salva após remover
@@ -107,6 +109,10 @@ public class Main {
                     break;
 
                 case 3:
+
+                    System.out.println("\n### LISTA DE TAREFAS ###");
+                    gerenciador.listarTarefas(true);    
+
                     System.out.print("Nome da tarefa a ser editada: ");
                     String tarefaEditar = scanner.nextLine();
                     System.out.print("Novo nome da tarefa: ");
@@ -155,8 +161,16 @@ public class Main {
                         }
                     } while (!opcaoValida); // Continua até o usuário digitar uma opção válida
 
+                    if (!desejaContinuar(scanner)) {
+                        opcao = 6; // Força a saída do loop
+                    }
+
                     break;
                 case 5:
+
+                    System.out.println("\n### LISTA DE TAREFAS ###");
+                    gerenciador.listarTarefas(false);
+
                     System.out.print("Nome da tarefa para concluir: ");
                     String nomeTarefa = scanner.nextLine();
                     gerenciador.marcarComoConcluida(nomeTarefa); // Chama o método do Gerenciador
