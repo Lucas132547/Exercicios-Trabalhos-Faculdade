@@ -21,7 +21,7 @@ public class Main {
     
         if (escolha == 2) {
             System.out.println("Saindo do sistema...");
-            return false; // Sai do loop principal
+            return false; 
         }
     
         return true; // Volta ao menu

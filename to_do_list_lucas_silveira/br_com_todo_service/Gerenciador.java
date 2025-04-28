@@ -36,7 +36,7 @@ public class Gerenciador {
         for (Tarefa t : tarefas) {
             if (incluirConcluidas || !t.isConcluida()) {
                 if (t instanceof TarefaPrioritaria) {
-                    System.out.println(t + " [PRIORITÁRIA] ");
+                    System.out.println(t);
                 } else {
                     System.out.println(t);
                 }

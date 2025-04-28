@@ -9,7 +9,7 @@ public class TarefaPrioritaria extends Tarefa {
             this.prioritaria = prioritaria;
     }
 
-    public boolean isPrioritaria(){
+    public boolean getPrioritaria(){
         return prioritaria;
     }
 
@@ -19,7 +19,7 @@ public class TarefaPrioritaria extends Tarefa {
 
     @Override
     public String toString() {
-        return super.toString() + "| Prioritaria: " +(prioritaria ? "Sim" : "Não");
+        return super.toString() + " | [PRIORITÁRIA] ";
     }
 
 
