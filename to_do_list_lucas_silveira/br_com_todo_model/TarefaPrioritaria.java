@@ -21,12 +21,4 @@ public class TarefaPrioritaria extends Tarefa {
     public String toString() {
         return super.toString() + " | [PRIORITÁRIA] ";
     }
-
-
-
-
-
-    
-
-    
 }

@@ -75,5 +75,4 @@ public class Gerenciador {
     public void setTarefas(List<Tarefa> tarefas) {
         this.tarefas = tarefas;
     }
-
 }
