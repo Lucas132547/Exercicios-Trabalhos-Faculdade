@@ -161,10 +161,11 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opção inválida! Tente novamente.");
+                    System.out.println("Opção inválida! Tente novamente. Seu imconpetente.");
             }
         } while (opcao != 6);
 
         scanner.close();
     }
 }
+
