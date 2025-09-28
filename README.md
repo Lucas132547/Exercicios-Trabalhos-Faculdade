@@ -12,7 +12,8 @@ O objetivo é registrar meu aprendizado e evolução nas diferentes disciplinas.
 
 ---
 
-## 👤 Autor
+##👤 Autor
+Lucas Silveira
 
-**Lucas Silveira**  
-🔗 [GitHub](https://github.com/SEU-USUARIO) | [LinkedIn](https://linkedin.com/in/SEU-LINK)
+- 📧 Email: lucas.silveira630521@gmail.com
+- https://github.com/Lucas132547
