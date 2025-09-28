@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0 ;
+    background-color: black;
+}
+.wrapper-content {
+    margin: 0 auto;
+    width: 60%;
+    display: block;
+    margin-top: 40px;
+    color: white;
+}
+form, .wrapper-text , .img_form {
+    display: inline-block;
+}
+form {
+    height: 100%;
+    width: 0%;
+}
+.wrapper-text {
+    width: 100%;
+}
+.wrapper-content p {
+    text-align: justify;
+}
+img {
+    margin-left: 30%;
+    width: 500px;
+    height: 350px;
+}

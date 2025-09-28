@@ -1,0 +1,22 @@
+body {
+    background-color: blue;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+}
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 28px;
+}
+h2 {
+    color:aqua;
+}
+p {
+    color: yellow;
+}
+img {
+    width: 300px;
+}
+ol {
+    line-height: 40px;
+}

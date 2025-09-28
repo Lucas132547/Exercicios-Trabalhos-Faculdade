@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Exemplo Formulario</title>
+</head>
+<body>
+    <div class="wrapper-content">
+        <div class="wrapper-text">
+            <h1>Tente a Sorte e Receba um Carro</h1>
+            <p>As melhores montadoras decidiram fazer um sorteio de carros de alta qualidade. Os primeiros 10 participantes a terem o seu numero sorteado poderão escolher qual carro pegar com 3 meses de garantia. Inscreva-se agora e não perca a chance de conseguir um desses carros
+            </p>
+        </div>
+        <form action="#" method="post" class="form">
+        <fieldset>
+            <legend>Formulario de Inscrição</legend>
+            <p>
+                <label for="inp_nome">Nome:</label>
+                <input type="text" name="inp_nome" id="inp_nome">
+            </p>
+            <p>
+                <label for="inp_tel">Telefone:</label>
+                <input type="text" name="inp_tel" id="inp_tel">
+            </p>
+            <p>
+                <label for="cehck_sexo">Sexo:</label>
+                <br>
+                <input type="radio" name="check_sexo" id="inp_sex_mas">masculino <br>
+                <input type="radio" name="check_sexo" id="inp_sex_fem">Feminino
+            </p>
+            <p>
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="inp_email">
+            </p>
+            <p>
+                <label for="nasc">Data de Nascimento</label>
+                <input type="date" name="nasc" id="inp_nasc">
+            </p>
+            <p> 
+                <button type="submit">Enviar</button>
+            </p>
+
+        </fieldset>
+    </form>
+    <img src="img/carros esportivos.avif" alt="imagem de carro" class="img_form">
+    </div>
+    <script src="JS/app.js"></script>
+</body>
+</html>
