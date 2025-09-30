@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia de Consulta — Loops, Funções e Estruturas Básicas em Python</title>
+  <style>
+    /* Estilo formal e minimalista para impressão e tela */
+    :root{
+      --c1:#1f2d3d; --c2:#2E5B8C; --c3:#444; --bg:#fff; --muted:#f6f6f6; --b:#ddd;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body{font-family:Georgia, "Times New Roman", serif; background:var(--bg); color:#111; line-height:1.6; padding:24px;}
+    h1,h2,h3{color:var(--c2); font-weight:700; margin:12px 0 8px;}
+    h1{font-size:28px; text-align:center; border-bottom:2px solid var(--c2); padding-bottom:8px; margin-bottom:18px;}
+    h2{font-size:22px; margin-top:18px;}
+    h3{font-size:18px; margin-top:14px;}
+    p{margin:8px 0;}
+    .small{font-size:14px; color:var(--c3);}
+    .block{background:var(--muted); border:1px solid var(--b); padding:14px; margin:16px 0;}
+    .code{background:#fafafa; border:1px solid var(--b); padding:12px; font-family:"Courier New", monospace; white-space:pre-wrap; overflow-wrap:anywhere;}
+    .table{width:100%; border-collapse:collapse; margin:12px 0;}
+    .table th,.table td{border:1px solid var(--b); padding:8px; text-align:left; vertical-align:top;}
+    .table th{background:#f0f4f8; color:var(--c1);}
+    .note{border-left:4px solid var(--c2); padding-left:12px; background:#fbfcfe; margin:10px 0; padding-top:10px; padding-bottom:10px;}
+    .hr{height:1px; background:var(--b); margin:18px 0;}
+    @media print{
+      body{padding:0; font-size:12pt;}
+      .block{break-inside:avoid;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BLOCO 1: Cabeçalho e instruções gerais -->
+  <header>
+    <h1>Guia de Consulta — Loops, Funções e Estruturas Básicas em Python</h1>
+    <p class="small">Disciplina: Estrutura de Dados II • Foco: Conteúdo até a Aula 02 • Arquivo de dados: <strong>sensor_data_100k.csv</strong></p>
+    <div class="note">
+      <p><strong>Como usar este guia:</strong> Este documento foi organizado em <em>blocos</em> independentes para facilitar o compartilhamento com os alunos. Cada bloco contém explicações, exemplos simples e exercícios orientados ao arquivo <code>sensor_data_100k.csv</code> (deve estar no mesmo diretório do notebook/ambiente do aluno).</p>
+    </div>
+  </header>
+
+  <div class="hr"></div>
+
+  <!-- BLOCO 2: Revisão objetiva de complexidade (versão simplificada) -->
+  <section id="bloco2" class="block">
+    <h2>Bloco 2 — Revisão Objetiva de Complexidade (Simplificada)</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Classe</th><th>Ideia</th><th>Exemplo didático</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>O(1)</strong></td>
+          <td>Tempo constante, independe do tamanho.</td>
+          <td>Acessar <code>lista[i]</code>, <code>dict[chave]</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>O(n)</strong></td>
+          <td>Proporcional ao tamanho n (um loop simples).</td>
+          <td>Somar todos os elementos de uma lista com <code>for</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>O(n log n)</strong></td>
+          <td>Comum em ordenações eficientes.</td>
+          <td><code>sorted(lista)</code> em geral.</td>
+        </tr>
+        <tr>
+          <td><strong>O(n²)</strong></td>
+          <td>Loops aninhados (comparar cada par).</td>
+          <td>Verificar similaridade entre todos os elementos.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="small">Observação: para esta etapa do curso, priorize raciocínios O(1) e O(n). Evite O(n²) quando possível.</p>
+  </section>
+
+  <!-- BLOCO 3: Estruturas básicas e operações fundamentais (sem avançados) -->
+  <section id="bloco3" class="block">
+    <h2>Bloco 3 — Estruturas Básicas e Operações Fundamentais</h2>
+    <table class="table">
+      <thead>
+        <tr><th>Estrutura</th><th>Métodos essenciais</th><th>Complexidade típica</th><th>Uso típico em IoT</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Lista</strong></td>
+          <td><code>append()</code>, <code>pop()</code>, percorrer com <code>for</code></td>
+          <td>append O(1) amort.; pop final O(1); percorrer O(n)</td>
+          <td>Acumular leituras sequenciais antes de salvar/analisar.</td>
+        </tr>
+        <tr>
+          <td><strong>Dicionário</strong></td>
+          <td>Acesso por chave <code>dict[k]</code>, <code>get()</code>, <code>in</code></td>
+          <td>Acesso médio O(1)</td>
+          <td>Mapear <em>sensor_id → última leitura</em> ou configurações.</td>
+        </tr>
+        <tr>
+          <td><strong>NumPy (opcional)</strong></td>
+          <td>Construção com <code>np.array</code>, soma vetorial</td>
+          <td>Operações lineares O(n), porém rápidas</td>
+          <td>Somar/filtrar leituras numéricas em lote.</td>
+        </tr>
+        <tr>
+          <td><strong>Pandas (opcional)</strong></td>
+          <td><code>read_csv</code>, seleção por coluna, <code>head()</code></td>
+          <td>Leituras/varreduras O(n)</td>
+          <td>Explorar dados tabulares rapidamente.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- BLOCO 4: Loops simples em Python (for/while) com exemplos -->
+  <section id="bloco4" class="block">
+    <h2>Bloco 4 — Loops Simples (for / while)</h2>
+    <p>Exemplos básicos com listas de números:</p>
+    <div class="code">
+# Somar valores (for)
+valores = [10, 12, 15, 9]
+soma = 0
+for v in valores:
+    soma += v
+print("Soma:", soma)
+
+# Contar quantos valores estão acima de um limiar
+limiar = 10
+contador = 0
+for v in valores:
+    if v > limiar:
+        contador += 1
+print("Acima do limiar:", contador)
+
+# while: consumir elementos de uma lista (ex.: buffer)
+buffer = [1, 2, 3]
+while buffer:
+    x = buffer.pop()  # remove do fim
+    # processa x
+    # ...
+    pass
+    </div>
+  </section>
+
+  <!-- BLOCO 5: Funções — assinatura, parâmetros, retorno -->
+  <section id="bloco5" class="block">
+    <h2>Bloco 5 — Funções (definir, reutilizar, testar)</h2>
+    <p>Uma função isola uma tarefa. Mantenha nomes claros e parâmetros simples.</p>
+    <div class="code">
+def media(valores):
+    # Retorna a média aritmética de uma lista de números.
+    if not valores:  # lista vazia
+        return 0.0
+    soma = 0
+    for v in valores:
+        soma += v
+    return soma / len(valores)
+
+def acima_do_limiar(valores, limiar):
+    # Conta quantos valores são estritamente maiores que o limiar.
+    cont = 0
+    for v in valores:
+        if v > limiar:
+            cont += 1
+    return cont
+
+# Testes simples
+print(media([1, 2, 3]))           # 2.0
+print(acima_do_limiar([1,2,3],1)) # 2
+    </div>
+  </section>
+
+  <!-- BLOCO 6: Leitura do CSV sensor_data_100k.csv com Pandas (básico) -->
+  <section id="bloco6" class="block">
+    <h2>Bloco 6 — Leitura do Arquivo CSV (básico)</h2>
+    <p>Use apenas as operações essenciais do Pandas para carregar e observar os dados. O arquivo <strong>sensor_data_100k.csv</strong> deve estar no mesmo diretório.</p>
+    <div class="code">
+import pandas as pd
+
+# Ler os primeiros 5.000 registros para testes rápidos (ajuste se necessário)
+df = pd.read_csv("sensor_data_100k.csv", nrows=5000)
+
+print(df.head())        # primeiras linhas
+print(df.columns)       # nomes das colunas
+print(len(df))          # quantas linhas foram lidas
+    </div>
+    <p class="small">Sugestão: se o arquivo tiver colunas como <code>timestamp</code>, <code>sensor_id</code>, <code>temperature</code>, <code>humidity</code>, foque nessas para os exercícios abaixo.</p>
+  </section>
+
+  <!-- BLOCO 7: Exercícios práticos (20 questões dissertativas simples) -->
+  <section id="bloco7" class="block">
+    <h2>Bloco 7 — Exercícios (20 questões dissertativas, loops e funções)</h2>
+    <ol>
+      <li><strong>Listas e loop for:</strong> Dada uma lista de 10 números, escreva uma função <code>soma_lista(lista)</code> que retorne a soma. Explique por que a complexidade é O(n).</li>
+      <li><strong>Contagem com condição:</strong> Escreva uma função <code>contar_acima(lista, limiar)</code> que conte quantos valores são &gt; limiar. Teste com três listas diferentes e explique.</li>
+      <li><strong>Média simples:</strong> Implemente <code>media(lista)</code> sem usar <code>sum()</code>. Explique o que acontece se a lista estiver vazia.</li>
+      <li><strong>Loop while:</strong> Use <code>while</code> para consumir elementos de uma lista (removendo do fim com <code>pop()</code>) e some os valores removidos. Explique quando usar <code>while</code> em vez de <code>for</code>.</li>
+      <li><strong>Função com dois retornos possíveis:</strong> Escreva <code>min_max(lista)</code> que retorne uma tupla (menor, maior). Explique a complexidade e como tratar lista vazia.</li>
+      <li><strong>Dicionário básico:</strong> Dado um dicionário <code>cfg = {"sensorA": 30.0, "sensorB": 28.5}</code>, escreva uma função que retorne o valor de uma chave com <code>get()</code> e <code>default</code>. Explique o custo médio O(1).</li>
+      <li><strong>Construindo dicionário:</strong> Dada uma lista de pares <code>(sensor_id, valor)</code>, crie uma função que construa um <code>dict</code> <code>{sensor_id: [valores...]}</code> percorrendo a lista uma única vez.</li>
+      <li><strong>Leitura de CSV:</strong> Utilize Pandas para ler <code>sensor_data_100k.csv</code> (apenas 5.000 linhas). Liste as colunas disponíveis e explique como descobrir o tipo de cada coluna.</li>
+      <li><strong>Coluna numérica:</strong> Escolha uma coluna numérica (por exemplo, temperatura). Construa uma função simples que calcule média, min, max percorrendo uma lista de valores Python (sem NumPy) e aplique aos dados da coluna convertida para lista.</li>
+      <li><strong>Filtro simples:</strong> Escreva uma função que receba <code>lista_valores</code> e um <code>limiar</code>, e retorne nova lista com apenas os valores &gt; limiar. Explique a complexidade.</li>
+      <li><strong>Contagem por sensor:</strong> A partir do DataFrame, crie um dicionário <code>contagem_por_sensor</code> que mapeia <code>sensor_id → quantidade de registros</code> usando apenas um loop <code>for</code> sobre <code>df["sensor_id"]</code>.</li>
+      <li><strong>Média por sensor (básico):</strong> Construa uma função que calcule a média de uma coluna (por exemplo, <code>temperature</code>) por <code>sensor_id</code> usando dicionário de acumulação (<code>somas</code> e <code>contagens</code>). Evite <code>groupby</code> nesta etapa.</li>
+      <li><strong>Faixa de valores:</strong> Escreva uma função que conte quantos valores estão em uma faixa [a, b]. Aplique em uma coluna numérica e discuta a utilidade em IoT.</li>
+      <li><strong>Normalização simples:</strong> Implemente <code>normaliza_0_1(lista)</code> que transforma valores para o intervalo [0,1] usando min–max. Explique possíveis problemas com valores constantes.</li>
+      <li><strong>Janela deslizante (básica):</strong> Escreva uma função que, dada uma lista e um <code>window</code>, retorne a soma de cada janela contígua (sem Pandas). Discuta a complexidade.</li>
+      <li><strong>Detecção simples de picos:</strong> Dada uma lista, conte quantas posições i satisfazem <code>lista[i] &gt; lista[i-1]</code> e <code>lista[i] &gt; lista[i+1]</code>. Trate bordas.</li>
+      <li><strong>Função principal:</strong> Crie uma função <code>main()</code> que leia o CSV (5.000 linhas), escolha uma coluna numérica, calcule média/min/max, e imprima um pequeno relatório. Não use recursos avançados.</li>
+      <li><strong>Teste e validação:</strong> Explique como você testaria suas funções com dados pequenos artificiais (listas curtas) antes de usar o CSV.</li>
+      <li><strong>Tempo de execução:</strong> Meça o tempo de uma função simples (por exemplo, soma de lista) com <code>time.perf_counter()</code> para 10.000, 50.000 e 100.000 elementos. Explique por que o tempo cresce aproximadamente de forma linear.</li>
+      <li><strong>Reflexão:</strong> Comente quando você escolheria dicionário em vez de lista para procurar dados de um sensor específico. Dê um exemplo curto e justifique.</li>
+    </ol>
+  </section>
+
+  <!-- BLOCO 8: Orientação de entrega -->
+  <section id="bloco8" class="block">
+    <h2>Bloco 8 — Orientações de Entrega</h2>
+    <ul>
+      <li>Respostas manuscritas em folha timbrada; linguagem clara e objetiva.</li>
+      <li>Entregar também um Jupyter Notebook com as funções implementadas e testes com <code>sensor_data_100k.csv</code> (pelo menos 5.000 linhas lidas para os exercícios).</li>
+      <li>Nome do arquivo: <code>RA_loops_funcoes_basico.ipynb</code>.</li>
+      <li>Mantenha cada exercício em uma célula separada, com comentários explicando o raciocínio.</li>
+    </ul>
+  </section>
+
+  <footer class="small">
+    <div class="hr"></div>
+    <p>Baseado no guia de complexidade original e adaptado para nível introdutório (loops e funções). Versão para uso até a Aula 02.</p>
+  </footer>
+
+</body>
+</html>
