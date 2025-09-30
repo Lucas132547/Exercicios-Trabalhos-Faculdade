@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Exercícios IoT (CSV/SQL) — Aluno (Básico, 3 por estrutura)">
+  <meta name="author" content="Prof. Anderson H. R. Ferreira">
+  <meta name="generator" content="CATS v1.0.0">
+  <title>Exercícios IoT (CSV/SQL) — Aluno (Básico, 3 por estrutura)</title>
+  <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: #1a1a1a; background: #ffffff; font-size: 14px; max-width: 100%; margin: 0; padding: 20px; }
+.container { max-width: 900px; margin: 0 auto; background: #ffffff; }
+.header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #d4d4d4; }
+.header h1 { font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.header .subtitle { font-size: 16px; color: #3a3a3a; margin-bottom: 15px; font-style: italic; }
+.header .info-semana { font-size: 14px; color: #5a5a5a; font-weight: bold; }
+.content-section { margin-bottom: 35px; padding: 0 10px; }
+.content-section h2 { font-size: 20px; color: #2c3e50; margin-bottom: 18px; border-bottom: 1px solid #e8e8e8; padding-bottom: 8px; }
+.content-section h3 { font-size: 16px; color: #34495e; margin: 20px 0 12px; font-weight: bold; }
+.content-section h4 { font-size: 14px; color: #555; margin: 15px 0 8px; font-weight: bold; }
+.highlight-box { background: #f9f9f9; border: 1px solid #d4d4d4; border-radius: 4px; padding: 15px; margin: 15px 0; }
+.theory-box { background: #fdfdfd; border: 1px solid #e8e8e8; border-radius: 4px; padding: 15px; margin: 15px 0; }
+.didatica-box { background: #fcfeff; border: 1px solid #b9d6f3; border-left: 4px solid #2c7be5; border-radius: 4px; padding: 15px; margin: 15px 0; }
+.code-block { background: #ffffff; border: 1px solid #d4d4d4; border-radius: 4px; margin: 12px 0; overflow: hidden; }
+.code-block pre { background: #ffffff; padding: 12px; margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 12px; line-height: 1.4; color: #1a1a1a; white-space: pre-wrap; word-wrap: break-word; }
+.gabarito-box { background: #f9f9f9; border: 2px solid #2c3e50; border-radius: 6px; padding: 20px; margin: 25px 0; }
+.gabarito-box h4 { color: #2c3e50; font-size: 16px; margin-bottom: 15px; text-align: center; font-weight: bold; text-transform: uppercase; }
+.footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e8e8e8; color: #5a5a5a; font-size: 12px; }
+ul, ol { margin-left: 20px; margin-bottom: 15px; }
+li { margin-bottom: 5px; }
+p { margin-bottom: 12px; text-align: justify; }
+a.download { color: #1a4a8a; text-decoration: none; border-bottom: 1px dotted #1a4a8a; }
+a.download:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>Exercícios IoT (CSV/SQL) — Aluno (Básico, 3 por estrutura)</h1>
+    <div class="subtitle">Conteúdo simplificado e direto ao ponto</div>
+    <div class="info-semana">02/09/2025 • ESP32 + MPU6050 • CSV + MySQL • Gabaritos ocultos</div>
+  </header>
+
+<section class="content-section">
+  <h2>Acesso aos Dados (CSV e SQL)</h2>
+  <div class="highlight-box">
+    <ul>
+      <li><a class="download" href="sensor_data_100k.csv" download>sensor_data_100k.csv</a></li>
+      <li><a class="download" href="sensor_data_schema_and_load.sql" download>sensor_data_schema_and_load.sql</a></li>
+    </ul>
+    <p>Mantenha este <code>.html</code>, o <code>.csv</code> e o <code>.sql</code> na mesma pasta.</p>
+  </div>
+  <div class="theory-box">
+    <h3>Como carregar o CSV (passo a passo)</h3>
+    <ol>
+      <li>Instale: <code>pip install pandas numpy</code></li>
+      <li>Abra o Jupyter/Colab e rode o código abaixo.</li>
+    </ol>
+    <div class="code-block"><pre>import pandas as pd
+import numpy as np
+
+df = pd.read_csv("sensor_data_100k.csv")
+
+# Datas (se existirem no CSV)
+df["timestamp_server"] = pd.to_datetime(df.get("timestamp_server"), errors="coerce")
+df["created_at"] = pd.to_datetime(df.get("created_at"), errors="coerce")
+
+# Converter colunas numéricas
+for c in ["accel_x","accel_y","accel_z","gyro_x","gyro_y","gyro_z","temperature","uptime_seconds"]:
+    if c in df.columns:
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+
+# 1) Lista de dicionários (para exercícios com listas/dicionários)
+sensor_data = df.to_dict(orient="records")
+
+# 2) Array NumPy (para exercícios com NumPy)
+arr = df[["accel_x","accel_y","accel_z","gyro_x","gyro_y","gyro_z","temperature","uptime_seconds"]].to_numpy(dtype="float32")
+
+print("Registros:", len(sensor_data), "| Shape arr:", arr.shape)</pre></div>
+  </div>
+</section>
+<section class="content-section"><h2>Parte 1 — Listas (3 exercícios)</h2><ol>
+<li><strong>Contar registros e dispositivos únicos</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Saber o tamanho do dataset e quantos equipamentos existem.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Conte o total com len(sensor_data).</li>
+<li>Percorra a lista e coloque cada device_id dentro de um conjunto (set).</li>
+<li>Conte o tamanho do set.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Use r.get(&#x27;device_id&#x27;) para evitar erro se a chave não existir.</li>
+<li>Ignorar valores None.</li>
+</ul>
+</div>
+<li><strong>Temperatura entre 20 e 30 °C (quantidade e média)</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Faixa comum de operação. Ajuda a identificar aquecimento ou leitura fora do normal.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Crie uma lista vazia.</li>
+<li>Percorra sensor_data, pegue r[&#x27;temperature&#x27;] se não for None e estiver entre 20 e 30.</li>
+<li>No fim, calcule média: soma/quantidade.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Cuidado para não dividir por zero se a lista estiver vazia.</li>
+</ul>
+</div>
+<li><strong>Maior valor de accel_z (com timestamp e device)</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Encontrar a leitura de maior aceleração no eixo Z.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Crie variáveis para guardar o maior valor e o registro correspondente.</li>
+<li>Percorra sensor_data; atualize se encontrar valor maior.</li>
+<li>Mostre o valor, o timestamp_device e o device_id.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Ignore registros sem accel_z.</li>
+</ul>
+</div>
+</ol></section><section class="content-section"><h2>Parte 2 — NumPy (3 exercícios)</h2><ol>
+<li><strong>Converter para NumPy (N×8, float32) e mostrar shape</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Preparar para contas rápidas em muitas linhas.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Selecione as 8 colunas numéricas.</li>
+<li>Use .to_numpy(dtype=&#x27;float32&#x27;).</li>
+<li>Imprima shape e dtype.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Se faltar coluna, confira o nome exatamente.</li>
+</ul>
+</div>
+<li><strong>Média e desvio‑padrão de temperature</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Resumo simples do comportamento térmico do sistema.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Pegue arr[:, 6] (coluna temperature).</li>
+<li>Use np.nanmean e np.nanstd.</li>
+<li>Imprima os valores.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Se aparecer nan, significa que existem valores ausentes.</li>
+</ul>
+</div>
+<li><strong>Magnitude simples do acelerômetro (100 primeiras linhas)</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Mede o quanto o equipamento se move em 3D.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Separe ax, ay, az das 100 primeiras linhas.</li>
+<li>Calcule sqrt(ax*ax + ay*ay + az*az).</li>
+<li>Mostre a média da magnitude.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Se preferir, pode fazer em laço for (um por um).</li>
+</ul>
+</div>
+</ol></section><section class="content-section"><h2>Parte 3 — Dicionários (3 exercícios)</h2><ol>
+<li><strong>Contagem por device_id</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Saber quantas leituras vieram de cada equipamento.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Crie um dicionário vazio.</li>
+<li>Para cada registro, some 1 na chave do device_id.</li>
+<li>Mostre o dicionário pronto.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Se a chave não existir ainda, inicialize com 0 antes de somar.</li>
+</ul>
+</div>
+<li><strong>Média de temperature por device_id</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Perfil térmico por equipamento.</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Crie dois dicionários: somas e contagens.</li>
+<li>Para cada registro com temperatura válida, some no equipamento e conte 1.</li>
+<li>No fim, divida soma/contagem para cada equipamento.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Se contagem for 0, não divida. Pule o equipamento.</li>
+</ul>
+</div>
+<li><strong>Contagem de leituras por dia (YYYY‑MM‑DD)</strong></li>
+<div class="didatica-box">
+<p><strong>Por que importa:</strong> Ajuda a ver se há dias com poucas leituras (problemas de coleta).</p>
+<h4>Passos sugeridos</h4><ol>
+<li>Para cada registro, converta timestamp_device (ms) para data.</li>
+<li>Some 1 na chave da data no dicionário.</li>
+<li>Mostre a contagem por dia.</li>
+</ol>
+<h4>Dicas</h4><ul>
+<li>Use datetime.fromtimestamp(ts/1000.0).</li>
+</ul>
+</div>
+</ol></section>
+  <footer class="footer">
+    <div class="footer-info">
+      <p><strong>Estrutura de Dados II – IoT</strong></p>
+      <p>CEUNSP • 2025.2</p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
